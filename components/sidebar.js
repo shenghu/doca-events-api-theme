@@ -121,7 +121,7 @@ class Sidebar extends Component {
               className={schema.get('html_id') === activeId ? 'active' : ''}
             >
               <a href={`#${schema.get('html_id')}`}>
-                schema.get('title')
+                {schema.get('title')}
               </a>
             </li>
           </ul>
