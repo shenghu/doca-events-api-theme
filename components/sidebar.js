@@ -5,13 +5,16 @@ const _ = require('lodash');
 const offsetTop = require('./helpers').offsetTop;
 
 
-const getLinks = (links, search) =>
-  links
-    .filter(link => {
-      if (link.get('private')) return false;
-      if (search &&
-        link.get('title').toLowerCase().indexOf(search.toLowerCase()) === -1) {
-        return false;
+const getCategories = (schemas, search) =>
+  schemas
+    .filter(schema => {
+      if (search) {
+        if (!schema.get('title')) {
+          return false;
+        } else if (schema.get('title').toLowerCase().indexOf(search.toLowerCase()) === -1) {
+          return false;
+        }
+        return true;
       }
       return true;
     });
@@ -102,6 +105,13 @@ class Sidebar extends Component {
     const { schemas } = this.props;
     const { activeId, search } = this.state;
 
+    const groupedSchemas = schemas.groupBy(x => (x.get('category') ? x.get('category') : 'misc'))
+      .mapEntries(([k, v]) => ([k, { category: k, schemas: v }])).toArray();
+
+    const sortedSchemas = groupedSchemas.sort((a, b) =>
+      a.category.toLowerCase().localeCompare(b.category.toLowerCase())
+    );
+
     return (
       <nav id="sidebar-wrapper">
         <div className="search">
@@ -112,25 +122,24 @@ class Sidebar extends Component {
             onChange={this.handleSearchChange}
           />
         </div>
-        {schemas.filter(schema => !schema.get('hidden')).valueSeq().map(schema =>
-          (
-          <ul className="sidebar-nav" key={schema.get('html_id')}>
-            <li className="sidebar-category">{schema.get('category')}</li>
-            <li
+        {sortedSchemas.map((elem) => (
+          <ul className="sidebar-nav" key={elem.category}>
+            <li className="sidebar-category">{elem.category}</li>
+          {getCategories(elem.schemas.filter(schema => !schema.get('hidden')), search).map(schema =>
+            (<li
               key={schema.get('html_id')}
               className={schema.get('html_id') === activeId ? 'active' : ''}
             >
               <a href={`#${schema.get('html_id')}`}>
-                {schema.get('title')}
+                  {schema.get('title')}
               </a>
-            </li>
+            </li>)
+          )}
           </ul>
-          )
-        )}
+          ))}
       </nav>
     );
   }
-
 }
 
 module.exports = Sidebar;

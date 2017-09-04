@@ -13,7 +13,7 @@ class Schema extends Component {
   };
 
   state = {
-    showDefinition: false,
+    showDefinition: true,
   };
 
   handleToggle = () => {

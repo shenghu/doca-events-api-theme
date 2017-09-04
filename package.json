@@ -1,6 +1,6 @@
 {
   "name": "doca-events-api-theme",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Doca theme for documenting events API",
   "main": "index.js",
   "author": "Sheng Hu <s.huhot@gmail.ibm.com>",
