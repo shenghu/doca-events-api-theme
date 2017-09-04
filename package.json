@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Doca theme for documenting events API",
   "main": "index.js",
-  "author": "Sheng Hu<husbj@cn.ibm.com>",
+  "author": "Sheng Hu <s.huhot@gmail.ibm.com>",
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
